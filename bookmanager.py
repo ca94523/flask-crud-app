@@ -22,8 +22,14 @@ class Book(db.Model):
     def __repr__(self):
         return "<Title: {}>".format(self.title)
 
+
 @app.route('/', methods=["GET", "POST"])
 def home():
+    books = Book.query.all()
+    return render_template("home.html", books=books)
+
+@app.route('/add', methods=["GET", "POST"])
+def add():
     books = None
     if request.form:
         try:
@@ -33,8 +39,8 @@ def home():
         except Exception as e:
             print("Failed to add book")
             print(e)
-    books = Book.query.all()
-    return render_template("home.html", books=books)
+    return redirect("/")
+
 
 @app.route("/update", methods=["POST"])
 def update():
